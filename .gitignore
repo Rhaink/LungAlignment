@@ -11,6 +11,7 @@ venv/
 
 # Datasets (descargar por separado)
 data/dataset/
+!data/dataset/README.md
 
 # IMPORTANTE: data/coordenadas/ SÍ está trackeado (119 KB)
 
