@@ -1,0 +1,9 @@
+{
+  "input_dir": "data/dataset/COVID-19_Radiography_Dataset",
+  "output_dir": "outputs/cropped_lung_10/sessionXX",
+  "crop_pct": 0.10,
+  "min_fill_rate": 0.47,
+  "splits": "0.75,0.125,0.125",
+  "seed": 42,
+  "classes": "COVID,Normal,Viral Pneumonia"
+}

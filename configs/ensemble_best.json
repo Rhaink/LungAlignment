@@ -1,0 +1,11 @@
+{
+  "name": "ensemble_best_20260111",
+  "models": [
+    "checkpoints/ensemble_seed123/final_model.pt",
+    "checkpoints/ensemble_seed321/final_model.pt",
+    "checkpoints/ensemble_seed111/final_model.pt",
+    "checkpoints/ensemble_seed666/final_model.pt"
+  ],
+  "tta": true,
+  "clahe": true
+}

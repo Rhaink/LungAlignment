@@ -1,0 +1,11 @@
+{
+  "seed": 42,
+  "hidden_dim": 512,
+  "dropout": 0.3,
+  "phase1_epochs": 15,
+  "phase2_epochs": 100,
+  "patience": 15,
+  "axis_weight": 0.5,
+  "save_dir": "checkpoints/hierarchical",
+  "clahe": true
+}

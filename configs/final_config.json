@@ -1,0 +1,255 @@
+{
+  "project": {
+    "name": "Chest X-Ray Landmark Prediction",
+    "version": "2.1",
+    "date": "2024-11-27",
+    "sessions_completed": 12
+  },
+  "results": {
+    "ensemble_4models": {
+      "error_px": 3.71,
+      "std_px": 2.42,
+      "median_px": 3.17,
+      "models_count": 4,
+      "models_used": ["seed123", "seed456", "seed321", "seed789"],
+      "tta_enabled": true,
+      "note": "Sesion 13: Ensemble de 4 modelos logra el mejor resultado"
+    },
+    "ensemble_optimal": {
+      "error_px": 3.79,
+      "std_px": 2.49,
+      "median_px": 3.21,
+      "models_count": 2,
+      "models_used": ["seed123", "seed456"],
+      "tta_enabled": true,
+      "note": "Sesion 12: Excluir seed=42 mejora de 4.50 a 3.79 px"
+    },
+    "ensemble_3_models": {
+      "error_px": 4.50,
+      "std_px": 2.99,
+      "median_px": 3.91,
+      "models_count": 3,
+      "tta_enabled": true,
+      "note": "seed=42 degrada el ensemble"
+    },
+    "best_individual": {
+      "error_px": 4.04,
+      "seed": 456,
+      "checkpoint": "checkpoints/session10/ensemble/seed456/final_model.pt"
+    },
+    "per_category": {
+      "Normal": {"error_px": 3.42, "samples": 47},
+      "COVID": {"error_px": 3.77, "samples": 31},
+      "Viral_Pneumonia": {"error_px": 4.40, "samples": 18}
+    },
+    "per_landmark": {
+      "L1": 3.20, "L2": 4.34, "L3": 3.20, "L4": 3.49,
+      "L5": 2.97, "L6": 3.01, "L7": 3.39, "L8": 3.67,
+      "L9": 2.84, "L10": 2.57, "L11": 3.19,
+      "L12": 5.50, "L13": 5.21, "L14": 4.63, "L15": 4.48
+    }
+  },
+  "architecture": {
+    "backbone": "resnet18",
+    "pretrained": true,
+    "use_coord_attention": true,
+    "deep_head": true,
+    "hidden_dim": 768,
+    "dropout_rate": 0.3,
+    "head_structure": [
+      {"type": "Flatten"},
+      {"type": "Linear", "in": 512, "out": 512},
+      {"type": "GroupNorm", "groups": 32, "channels": 512},
+      {"type": "ReLU"},
+      {"type": "Dropout", "p": 0.3},
+      {"type": "Linear", "in": 512, "out": 768},
+      {"type": "GroupNorm", "groups": 48, "channels": 768},
+      {"type": "ReLU"},
+      {"type": "Dropout", "p": 0.15},
+      {"type": "Linear", "in": 768, "out": 30},
+      {"type": "Sigmoid"}
+    ],
+    "output_format": "30 normalized coordinates [0,1]",
+    "_note": "Corregido 16-Dic-2025: estructura verificada desde checkpoint seed456"
+  },
+  "preprocessing": {
+    "input_size": [299, 299],
+    "output_size": [224, 224],
+    "clahe": {
+      "enabled": true,
+      "clip_limit": 2.0,
+      "tile_size": 4,
+      "color_space": "LAB"
+    },
+    "normalization": {
+      "mean": [0.485, 0.456, 0.406],
+      "std": [0.229, 0.224, 0.225]
+    }
+  },
+  "training": {
+    "phase1": {
+      "description": "Backbone frozen, train head only",
+      "epochs": 15,
+      "learning_rate": 0.001,
+      "batch_size": 16
+    },
+    "phase2": {
+      "description": "Fine-tuning all layers",
+      "epochs": 100,
+      "backbone_lr": 2e-5,
+      "head_lr": 2e-4,
+      "batch_size": 8,
+      "scheduler": "CosineAnnealingLR",
+      "early_stopping_patience": 15
+    },
+    "loss": {
+      "type": "WingLoss",
+      "omega": 0.0446,
+      "epsilon": 0.0089,
+      "normalized": true
+    },
+    "optimizer": "Adam"
+  },
+  "augmentation": {
+    "train": {
+      "horizontal_flip": {
+        "probability": 0.5,
+        "swap_pairs": [[2,3], [4,5], [6,7], [11,12], [13,14]]
+      },
+      "rotation": {
+        "degrees": 10
+      },
+      "color_jitter": {
+        "brightness": 0.2,
+        "contrast": 0.2
+      }
+    },
+    "inference": {
+      "tta": {
+        "enabled": true,
+        "augmentations": ["original", "horizontal_flip"]
+      }
+    }
+  },
+  "dataset": {
+    "total_samples": 957,
+    "split": {
+      "train": 0.75,
+      "val": 0.15,
+      "test": 0.10
+    },
+    "stratify_by": "category",
+    "random_state": 42,
+    "categories": {
+      "COVID": {"count": 306, "percentage": 32.0},
+      "Normal": {"count": 468, "percentage": 48.9},
+      "Viral_Pneumonia": {"count": 183, "percentage": 19.1}
+    },
+    "landmarks": {
+      "count": 15,
+      "description": {
+        "L1": "Superior mediastinum",
+        "L2": "Inferior mediastinum",
+        "L3": "Left apex",
+        "L4": "Right apex",
+        "L5": "Left hilum",
+        "L6": "Right hilum",
+        "L7": "Left base",
+        "L8": "Right base",
+        "L9": "Superior central",
+        "L10": "Middle central",
+        "L11": "Inferior central",
+        "L12": "Left upper border",
+        "L13": "Right upper border",
+        "L14": "Left costophrenic angle",
+        "L15": "Right costophrenic angle"
+      },
+      "symmetric_pairs": [[2,3], [4,5], [6,7], [11,12], [13,14]]
+    }
+  },
+  "ensemble_4models": {
+    "description": "Ensemble optimo: 4 modelos (Sesion 13) - Mejor resultado",
+    "models": [
+      {
+        "seed": 123,
+        "checkpoint": "checkpoints/session10/ensemble/seed123/final_model.pt",
+        "individual_error_px": 4.05
+      },
+      {
+        "seed": 456,
+        "checkpoint": "checkpoints/session10/ensemble/seed456/final_model.pt",
+        "individual_error_px": 4.04
+      },
+      {
+        "seed": 321,
+        "checkpoint": "checkpoints/session13/seed321/final_model.pt",
+        "individual_error_px": 4.0
+      },
+      {
+        "seed": 789,
+        "checkpoint": "checkpoints/session13/seed789/final_model.pt",
+        "individual_error_px": 4.0
+      }
+    ],
+    "aggregation": "mean",
+    "weights": [0.25, 0.25, 0.25, 0.25],
+    "tta_per_model": true,
+    "ensemble_error_px": 3.71
+  },
+  "ensemble_optimal": {
+    "description": "Ensemble optimo: 2 modelos sin seed=42 (Sesion 12)",
+    "models": [
+      {
+        "seed": 123,
+        "checkpoint": "checkpoints/session10/ensemble/seed123/final_model.pt",
+        "individual_error_px": 4.05
+      },
+      {
+        "seed": 456,
+        "checkpoint": "checkpoints/session10/ensemble/seed456/final_model.pt",
+        "individual_error_px": 4.04
+      }
+    ],
+    "aggregation": "mean",
+    "weights": [0.5, 0.5],
+    "tta_per_model": true,
+    "ensemble_error_px": 3.79
+  },
+  "ensemble_all": {
+    "description": "Ensemble completo: 3 modelos (seed=42 degrada el resultado)",
+    "models": [
+      {
+        "seed": 42,
+        "checkpoint": "checkpoints/session10/exp4_epochs100/final_model.pt",
+        "individual_error_px": 6.75,
+        "note": "Este modelo degrada el ensemble de 3.79 a 4.50 px"
+      },
+      {
+        "seed": 123,
+        "checkpoint": "checkpoints/session10/ensemble/seed123/final_model.pt",
+        "individual_error_px": 4.05
+      },
+      {
+        "seed": 456,
+        "checkpoint": "checkpoints/session10/ensemble/seed456/final_model.pt",
+        "individual_error_px": 4.04
+      }
+    ],
+    "aggregation": "mean",
+    "tta_per_model": true,
+    "ensemble_error_px": 4.50
+  },
+  "hardware": {
+    "gpu": "AMD Radeon RX 6600",
+    "gpu_memory": "8.6 GB",
+    "framework": "PyTorch 2.0+",
+    "rocm_compatible": true,
+    "cuda_compatible": true
+  },
+  "files": {
+    "data_csv": "data/coordenadas/coordenadas_maestro.csv",
+    "data_root": "data/",
+    "checkpoints_dir": "checkpoints/session10/",
+    "outputs_dir": "outputs/"
+  }
+}

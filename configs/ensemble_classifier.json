@@ -1,0 +1,22 @@
+{
+  "description": "5-fold cross-validation ensemble configuration for classifier evaluation",
+  "use_tta": true,
+  "checkpoint_paths": [
+    "outputs/classifier_cv/fold_01/best_classifier.pt",
+    "outputs/classifier_cv/fold_02/best_classifier.pt",
+    "outputs/classifier_cv/fold_03/best_classifier.pt",
+    "outputs/classifier_cv/fold_04/best_classifier.pt",
+    "outputs/classifier_cv/fold_05/best_classifier.pt"
+  ],
+  "data_dir": "outputs/warped_lung_best/session_warping",
+  "split": "test",
+  "baseline_accuracy": 0.9768,
+  "baseline_std": 0.0016,
+  "class_names": ["COVID", "Normal", "Viral_Pneumonia"],
+  "expected_samples": {
+    "total": 1895,
+    "COVID": 452,
+    "Normal": 1274,
+    "Viral_Pneumonia": 169
+  }
+}

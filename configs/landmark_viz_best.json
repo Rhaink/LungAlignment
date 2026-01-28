@@ -1,0 +1,11 @@
+{
+  "input_dir": "data/dataset/COVID-19_Radiography_Dataset",
+  "output_dir": "outputs/landmark_visualizations/session_warping",
+  "predictions": "outputs/landmark_predictions/session_warping/predictions.npz",
+  "splits": "0.75,0.125,0.125",
+  "seed": 42,
+  "classes": "COVID,Normal,Viral Pneumonia",
+  "cross_size": 5,
+  "cross_thickness": 2,
+  "cross_color": "red"
+}

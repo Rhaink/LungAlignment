@@ -1,0 +1,16 @@
+{
+  "input_dir": "data/dataset/COVID-19_Radiography_Dataset",
+  "output_dir": "outputs/warped_lung_best/sessionXX",
+  "predictions": "outputs/landmark_predictions/sessionXX/predictions.npz",
+  "canonical": "outputs/shape_analysis/canonical_shape_gpa.json",
+  "triangles": "outputs/shape_analysis/canonical_delaunay_triangles.json",
+  "margin": 1.05,
+  "splits": "0.75,0.125,0.125",
+  "seed": 42,
+  "clahe": true,
+  "clahe_clip": 2.0,
+  "clahe_tile": 4,
+  "use_full_coverage": false,
+  "tta": true,
+  "classes": "COVID,Normal,Viral Pneumonia"
+}

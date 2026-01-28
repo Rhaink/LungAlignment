@@ -1,0 +1,525 @@
+{
+  "_metadata": {
+    "description": "Valores validados experimentalmente para verificacion de scripts",
+    "version": "2.1.0",
+    "last_updated": "2026-01-13",
+    "reference": "docs/REFERENCIA_SESIONES_FUTURAS.md",
+    "validated_sessions": [
+      39,
+      42,
+      43,
+      52,
+      53,
+      55
+    ]
+  },
+  "landmarks": {
+    "description": "Error de prediccion de landmarks (pixeles en imagen 224x224)",
+    "ensemble_4_models_tta": {
+      "obsolete": true,
+      "obsolete_reason": "Superseded by ensemble_4_models_tta_best_20260111 (3.61 px with seeds 123,321,111,666)",
+      "obsolete_date": "2026-01-14",
+      "mean_error_px": 3.71,
+      "std_px": 2.42,
+      "median_px": 3.17,
+      "models": [
+        "checkpoints/session10/ensemble/seed123/final_model.pt",
+        "checkpoints/session10/ensemble/seed456/final_model.pt",
+        "checkpoints/session13/seed321/final_model.pt",
+        "checkpoints/session13/seed789/final_model.pt"
+      ]
+    },
+    "best_individual_tta": {
+      "mean_error_px": 4.04,
+      "model": "checkpoints/session10/ensemble/seed456/final_model.pt"
+    },
+    "theoretical_minimum_px": 1.3,
+    "original_image_size": 299,
+    "model_input_size": 224,
+    "ensemble_4_models_tta_best_20260110": {
+      "obsolete": true,
+      "obsolete_reason": "Superseded by ensemble_4_models_tta_best_20260111 (3.61 px with seed666 instead of seed111)",
+      "obsolete_date": "2026-01-14",
+      "mean_error_px": 3.67,
+      "std_px": 2.45,
+      "median_px": 3.18,
+      "models": [
+        "checkpoints/session10/ensemble/seed123/final_model.pt",
+        "checkpoints/session10/ensemble/seed456/final_model.pt",
+        "checkpoints/session13/seed321/final_model.pt",
+        "checkpoints/repro_split111/session14/seed111/final_model.pt"
+      ],
+      "note": "Best combo from sweep (seed111); evaluate-ensemble with TTA+CLAHE, test split."
+    },
+    "ensemble_4_models_tta_best_20260111": {
+      "mean_error_px": 3.61,
+      "std_px": 2.48,
+      "median_px": 3.07,
+      "models": [
+        "checkpoints/session10/ensemble/seed123/final_model.pt",
+        "checkpoints/session13/seed321/final_model.pt",
+        "checkpoints/repro_split111/session14/seed111/final_model.pt",
+        "checkpoints/repro_split666/session16/seed666/final_model.pt"
+      ],
+      "note": "Best combo from sweep (seed666); evaluate-ensemble with TTA+CLAHE, test split."
+    }
+  },
+  "classification": {
+    "description": "Accuracy de clasificacion COVID-19 (3 clases)",
+    "classes": [
+      "COVID",
+      "Normal",
+      "Viral_Pneumonia"
+    ],
+    "datasets": {
+      "original_100": {
+        "obsolete": true,
+        "obsolete_reason": "Not part of current methodology (warped_lung_best is current)",
+        "obsolete_date": "2026-01-14",
+        "accuracy": 98.84,
+        "f1_score": 98.16,
+        "fill_rate": 100
+      },
+      "original_cropped_47": {
+        "obsolete": true,
+        "obsolete_reason": "Not part of current methodology (warped_lung_best is current)",
+        "obsolete_date": "2026-01-14",
+        "accuracy": 98.89,
+        "f1_score": 98.25,
+        "fill_rate": 47
+      },
+      "warped_47": {
+        "obsolete": true,
+        "obsolete_reason": "Superseded by warped_lung_best (98.05%, same fill_rate but better preprocessing)",
+        "obsolete_date": "2026-01-14",
+        "accuracy": 98.02,
+        "fill_rate": 47
+      },
+      "warped_lung_best": {
+        "accuracy": 98.05,
+        "f1_macro": 97.12,
+        "f1_weighted": 98.04,
+        "fill_rate": 47,
+        "dataset_path": "outputs/warped_lung_best/session_warping",
+        "classifier_path": "outputs/classifier_warped_lung_best/sweeps_2026-01-12/lr2e-4_seed321_on",
+        "preprocessing": "Grayscale + CLAHE",
+        "note": "Best actual en warped_lung_best (ResNet18 sweep, 2026-01-13)"
+      },
+      "warped_99": {
+        "obsolete": true,
+        "obsolete_reason": "Superseded by warped_lung_best (98.05%, fill_rate=47%). RGB+CLAHE inflates fill_rate artificially",
+        "obsolete_date": "2026-01-14",
+        "accuracy": 98.73,
+        "f1_score": 97.95,
+        "fill_rate": 99,
+        "dataset_path": "outputs/full_coverage_warped_dataset",
+        "classifier_path": "outputs/classifier_warped_full_coverage",
+        "preprocessing": "RGB + CLAHE (LAB space)"
+      },
+      "warped_96": {
+        "obsolete": true,
+        "obsolete_reason": "Superseded by warped_lung_best (98.05%, fill_rate=47%). warped_96 was using full coverage which is not the current approach",
+        "obsolete_date": "2026-01-14",
+        "accuracy": 99.1,
+        "f1_score": 98.45,
+        "fill_rate": 96,
+        "dataset_path": "outputs/warped_replication_v2",
+        "classifier_path": "outputs/classifier_replication_v2",
+        "preprocessing": "Grayscale + CLAHE",
+        "note": "RECOMMENDED - Best accuracy with good robustness"
+      }
+    },
+    "cross_validation": {
+      "description": "K-fold CV on train+val with fixed test holdout (not evaluated)",
+      "timestamp": "2026-01-16T11:12:51.314406",
+      "data_dir": "outputs/warped_lung_best/session_warping",
+      "output_dir": "outputs/classifier_cv",
+      "backbone": "resnet18",
+      "folds": 5,
+      "seed": 42,
+      "eval_test": false,
+      "metrics_percent": {
+        "val_accuracy_mean": 98.5971,
+        "val_accuracy_std": 0.2551,
+        "val_f1_macro_mean": 98.0035,
+        "val_f1_macro_std": 0.3613,
+        "val_f1_weighted_mean": 98.5983,
+        "val_f1_weighted_std": 0.2516
+      },
+      "source": "outputs/classifier_cv/cross_validation_results.json",
+      "note": "Metrics converted to percent from CV summary (scale 0-1)."
+    },
+    "classifier_ensemble_cv": {
+      "description": "5-fold CV ensemble evaluation on test set (Phase 2 baseline, Phase 3 TTA)",
+      "note": "Baseline metrics from Phase 2, TTA metrics from Phase 3 - final validation in Phase 5",
+      "baseline_individual_mean": 0.9768,
+      "baseline_individual_std": 0.0016,
+      "baseline_no_tta": {
+        "accuracy": 0.9810026385224274,
+        "f1_macro": 0.9703237736245484,
+        "f1_weighted": 0.9809286214299495,
+        "improvement_over_individual": 0.004202638522427415,
+        "timestamp": "2026-01-27T20:01:02.860435",
+        "results": "outputs/classifier_cv/ensemble_test_results.json"
+      },
+      "with_tta": {
+        "accuracy": 0.9825858312020028,
+        "f1_macro": 0.9712153409297419,
+        "f1_weighted": 0.982535723749652,
+        "improvement_over_baseline": 0.0015831926795753998,
+        "timestamp": "2026-01-28T03:01:35.342000",
+        "case_level_impact": {
+          "helped": 6,
+          "hurt": 3,
+          "neutral": 1886,
+          "net_improvement": 3
+        },
+        "per_class_f1_delta": {
+          "COVID": 0.004412436597435156,
+          "Normal": 0.0011767955856926584,
+          "Viral_Pneumonia": -0.002840159252064832
+        },
+        "results": "outputs/classifier_cv/ensemble_test_results_tta.json",
+        "predictions": "outputs/classifier_cv/ensemble_predictions_tta.csv"
+      },
+      "test_set_size": 1895,
+      "validated": "2026-01-28",
+      "config": "configs/ensemble_classifier.json"
+    }
+  },
+  "robustness": {
+    "obsolete": true,
+    "obsolete_reason": "Robustness experiments were done with warped_96/warped_99, not with warped_lung_best (current method)",
+    "obsolete_date": "2026-01-14",
+    "description": "Degradacion de accuracy bajo perturbaciones (%)",
+    "jpeg_q50": {
+      "original_100": 16.14,
+      "original_cropped_47": 2.11,
+      "warped_47": 0.53,
+      "warped_99": 7.34,
+      "warped_96": 3.06
+    },
+    "jpeg_q30": {
+      "original_100": 29.97,
+      "original_cropped_47": 7.65,
+      "warped_47": 1.32,
+      "warped_99": 16.73,
+      "warped_96": 5.28
+    },
+    "blur_sigma1": {
+      "original_100": 14.43,
+      "original_cropped_47": 7.65,
+      "warped_47": 6.06,
+      "warped_99": 11.35,
+      "warped_96": 2.43
+    },
+    "improvement_factors": {
+      "jpeg_q50_vs_original": 30.45,
+      "blur_vs_original": 2.38,
+      "mechanism": {
+        "information_reduction_percent": 75,
+        "geometric_normalization_percent": 25
+      }
+    },
+    "warped_96_vs_warped_99": {
+      "jpeg_q50_improvement": 2.4,
+      "jpeg_q30_improvement": 3.17,
+      "blur_sigma1_improvement": 4.67,
+      "note": "warped_96 is 2-5x more robust than warped_99"
+    }
+  },
+  "cross_evaluation": {
+    "obsolete": true,
+    "obsolete_reason": "Cross-evaluation was done with warped_99, not with warped_lung_best (current method)",
+    "obsolete_date": "2026-01-14",
+    "description": "Accuracy de modelos evaluados en datasets cruzados",
+    "original_model": {
+      "on_original": 98.84,
+      "on_warped_99": 91.13,
+      "gap": 7.7
+    },
+    "warped_model": {
+      "on_original": 95.57,
+      "on_warped_99": 98.73,
+      "gap": 3.17
+    },
+    "generalization_improvement_factor": 2.43
+  },
+  "pfs": {
+    "obsolete": true,
+    "obsolete_reason": "PFS metric not computed for warped_lung_best (current method)",
+    "obsolete_date": "2026-01-14",
+    "description": "Pulmonary Focus Score (proporcion de atencion en pulmones)",
+    "mean": 0.487,
+    "std": 0.091,
+    "interpretation": "~0.49 aproximadamente igual a chance (50%), NO hay evidencia de foco pulmonar forzado"
+  },
+  "fill_rate_tradeoff": {
+    "obsolete": true,
+    "obsolete_reason": "Trade-off analysis was done with warped_47/warped_96/warped_99, not with warped_lung_best (current method)",
+    "obsolete_date": "2026-01-14",
+    "description": "Trade-off entre fill rate, accuracy y robustez (Sesion 53)",
+    "analysis": {
+      "warped_47": {
+        "fill_rate": 47,
+        "accuracy": 98.02,
+        "jpeg_q50_deg": 0.53,
+        "composite_score": 97.49,
+        "use_case": "Maximum robustness required"
+      },
+      "warped_96": {
+        "fill_rate": 96,
+        "accuracy": 99.1,
+        "jpeg_q50_deg": 3.06,
+        "composite_score": 96.04,
+        "use_case": "RECOMMENDED - Best overall balance"
+      },
+      "warped_99": {
+        "fill_rate": 99,
+        "accuracy": 98.73,
+        "jpeg_q50_deg": 7.34,
+        "composite_score": 91.39,
+        "use_case": "Legacy - superseded by warped_96"
+      }
+    },
+    "optimal_point": "warped_96",
+    "key_findings": [
+      "96% fill rate achieves HIGHEST accuracy (99.10%)",
+      "96% fill rate has 2.4x better JPEG robustness than 99%",
+      "Grayscale processing preserves original pixel values",
+      "RGB+CLAHE eliminates black pixels artificially inflating fill rate"
+    ],
+    "fill_rate_difference_explanation": {
+      "warped_99_method": "RGB + CLAHE in LAB space, min pixel value = 2-3 (no true blacks)",
+      "warped_96_method": "Grayscale + CLAHE, min pixel value = 0 (preserves blacks)",
+      "implication": "96% is a more honest fill rate measurement",
+      "both_use_predicted_landmarks": true,
+      "both_use_full_coverage_warping": true
+    }
+  },
+  "external_validation": {
+    "obsolete": true,
+    "obsolete_reason": "External validation was done with warped_96, not with warped_lung_best (current method)",
+    "obsolete_date": "2026-01-14",
+    "description": "Evaluacion en datasets externos (fuera de distribucion) - Sesion 55",
+    "dataset3_fedcovidx": {
+      "n_samples": 8482,
+      "class_mapping": "COVID→positive, Normal+Viral_Pneumonia→negative",
+      "sources": [
+        "BIMCV (~95%)",
+        "RICORD",
+        "RSNA"
+      ],
+      "warped_96_recommended": {
+        "internal_accuracy": 99.1,
+        "on_d3_original": {
+          "accuracy": 53.36,
+          "sensitivity": 90.12,
+          "specificity": 16.6,
+          "f1_score": 65.9,
+          "auc_roc": 0.5422,
+          "gap": 45.74
+        },
+        "on_d3_warped": {
+          "accuracy": 55.31,
+          "sensitivity": 89.86,
+          "specificity": 20.75,
+          "f1_score": 66.78,
+          "auc_roc": 0.5994,
+          "gap": 43.79
+        }
+      },
+      "baseline_comparison": {
+        "best_original": {
+          "model": "resnet18_original",
+          "accuracy": 57.5
+        },
+        "best_warped": {
+          "model": "vgg16_warped",
+          "accuracy": 56.44
+        }
+      },
+      "interpretation": {
+        "binary_classification_baseline": 50.0,
+        "external_accuracy_range": "53-57%",
+        "meaning": "Todos los modelos (warped y original) son ~random en datos externos",
+        "is_warping_problem": false,
+        "is_domain_shift_problem": true
+      },
+      "conclusion": "53-57% es apenas mejor que adivinar. Esto NO invalida el warping porque el modelo original tambien falla (~57%). Es domain shift, problema fundamental en medical imaging.",
+      "recommendation": "Para uso en nuevos hospitales: domain adaptation, fine-tuning local, o transfer learning"
+    },
+    "clahe_verification_experiment": {
+      "description": "Experimento para verificar que el domain shift no es artefacto de preprocesamiento",
+      "hypothesis": "Aplicar CLAHE identico al training mejoraria resultados externos",
+      "results_with_clahe": {
+        "d3_original_clahe": {
+          "accuracy": 50.65,
+          "sensitivity": 90.36,
+          "specificity": 10.94
+        },
+        "d3_warped_clahe": {
+          "accuracy": 50.8,
+          "sensitivity": 95.5,
+          "specificity": 6.11
+        }
+      },
+      "histogram_analysis": {
+        "training_mean": 135.82,
+        "external_without_clahe_mean": 98.5,
+        "external_with_clahe_mean": 123.35,
+        "distance_without_clahe": 46.98,
+        "distance_with_clahe": 17.66,
+        "note": "CLAHE acerca estadisticamente pero accuracy empeora"
+      },
+      "conclusion": "CLAHE NO mejora resultados (50.65% vs 53.36%). Domain shift es REAL, no artefacto de preprocesamiento"
+    }
+  },
+  "preprocessing": {
+    "clahe": {
+      "clip_limit": 2.0,
+      "tile_size": 4
+    },
+    "model_architecture": {
+      "backbone": "ResNet-18",
+      "coord_attention": true,
+      "deep_head": true,
+      "hidden_dim": 768,
+      "dropout": 0.3
+    },
+    "warping": {
+      "margin_scale_optimal": 1.05,
+      "margin_scale_default": 1.25,
+      "use_full_coverage": true
+    }
+  },
+  "tolerances": {
+    "description": "Tolerancias para tests de regresion",
+    "landmark_error_px": {
+      "absolute": 0.5,
+      "relative_percent": 10
+    },
+    "classification_accuracy": {
+      "absolute_percent": 2.0
+    },
+    "robustness_degradation": {
+      "absolute_percent": 3.0
+    }
+  },
+  "historical_baselines": {
+    "description": "Valores de referencia de sesiones anteriores",
+    "session_4_baseline": 9.08,
+    "session_10_seed42_no_tta": 6.75,
+    "session_12_ensemble_2": 3.79,
+    "session_12_ensemble_3": 4.5
+  },
+  "per_category_landmarks": {
+    "description": "Error por categoria con ensemble 4 modelos + TTA (Sesion 13)",
+    "source": "SESION_13_ENSEMBLE_4_MODELOS.md lineas 73-75",
+    "ensemble_4_tta": {
+      "COVID": 3.77,
+      "Normal": 3.42,
+      "Viral_Pneumonia": 4.4
+    },
+    "ensemble_4_tta_best_20260110": {
+      "Normal": 3.36,
+      "COVID": 3.8,
+      "Viral_Pneumonia": 4.22
+    },
+    "ensemble_4_tta_best_20260111": {
+      "Normal": 3.22,
+      "COVID": 3.93,
+      "Viral_Pneumonia": 4.11
+    },
+    "source_best_20260110": "evaluate-ensemble 2026-01-10 (TTA+CLAHE)",
+    "source_best_20260111": "evaluate-ensemble 2026-01-11 (TTA+CLAHE)"
+  },
+  "per_landmark_errors": {
+    "description": "Error por landmark con ensemble 4 modelos + TTA",
+    "source": "SESION_13_ENSEMBLE_4_MODELOS.md lineas 79-95",
+    "unit": "pixels (imagen 224x224)",
+    "values": {
+      "L1": 3.2,
+      "L2": 4.34,
+      "L3": 3.2,
+      "L4": 3.49,
+      "L5": 2.97,
+      "L6": 3.01,
+      "L7": 3.39,
+      "L8": 3.67,
+      "L9": 2.84,
+      "L10": 2.57,
+      "L11": 3.19,
+      "L12": 5.5,
+      "L13": 5.21,
+      "L14": 4.63,
+      "L15": 4.48
+    },
+    "best_landmarks": [
+      "L10",
+      "L9",
+      "L5"
+    ],
+    "worst_landmarks": [
+      "L12",
+      "L13",
+      "L14"
+    ],
+    "values_best_20260110": {
+      "L1": 3.25,
+      "L2": 4.13,
+      "L3": 3.21,
+      "L4": 3.5,
+      "L5": 3.0,
+      "L6": 2.95,
+      "L7": 3.42,
+      "L8": 3.56,
+      "L9": 2.83,
+      "L10": 2.52,
+      "L11": 3.12,
+      "L12": 5.46,
+      "L13": 5.24,
+      "L14": 4.5,
+      "L15": 4.3
+    },
+    "best_landmarks_best_20260110": [
+      "L10",
+      "L9",
+      "L6"
+    ],
+    "worst_landmarks_best_20260110": [
+      "L12",
+      "L13",
+      "L14"
+    ],
+    "source_best_20260110": "evaluate-ensemble 2026-01-10 (TTA+CLAHE)",
+    "values_best_20260111": {
+      "L1": 3.22,
+      "L2": 3.96,
+      "L3": 3.18,
+      "L4": 3.65,
+      "L5": 2.88,
+      "L6": 2.94,
+      "L7": 3.29,
+      "L8": 3.5,
+      "L9": 2.76,
+      "L10": 2.44,
+      "L11": 2.94,
+      "L12": 5.43,
+      "L13": 5.35,
+      "L14": 4.39,
+      "L15": 4.29
+    },
+    "best_landmarks_best_20260111": [
+      "L10",
+      "L9",
+      "L5"
+    ],
+    "worst_landmarks_best_20260111": [
+      "L12",
+      "L13",
+      "L14"
+    ],
+    "source_best_20260111": "evaluate-ensemble 2026-01-11 (TTA+CLAHE)"
+  }
+}
