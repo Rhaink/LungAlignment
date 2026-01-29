@@ -30,7 +30,7 @@ pip install -r requirements.txt
 Si necesitas una build especifica de PyTorch, ajusta segun tu hardware.
 
 ## Flujo de trabajo actual (resumen)
-1) Forma canonica (GPA):
+1) Forma estándar (GPA):
 ```bash
 python -m src_v2 compute-canonical data/coordenadas/coordenadas_maestro.csv \
   --output-dir outputs/shape_analysis --visualize
