@@ -1,11 +1,11 @@
 # LungAlignment
 
-Este repositorio implementa un pipeline completo para:
-1) detectar landmarks pulmonares,
+Este repositorio implementa un flujo de trabajo completo para:
+1) detectar puntos de referencia pulmonares,
 2) normalizar la geometria por warping,
 3) entrenar un clasificador CNN sobre imagenes warpeadas.
 
-El estado actual reproduce el ensemble de landmarks **3.61 px** y un
+El estado actual reproduce el ensemble de puntos de referencia **3.61 px** y un
 clasificador en warped con **~98% accuracy** (ver `docs/EXPERIMENTS.md`).
 
 ## Estructura rapida del repo
@@ -29,14 +29,14 @@ pip install -r requirements.txt
 ```
 Si necesitas una build especifica de PyTorch, ajusta segun tu hardware.
 
-## Pipeline actual (resumen)
+## Flujo de trabajo actual (resumen)
 1) Forma canonica (GPA):
 ```bash
 python -m src_v2 compute-canonical data/coordenadas/coordenadas_maestro.csv \
   --output-dir outputs/shape_analysis --visualize
 ```
 
-2) Predicciones de landmarks (cache completo del dataset):
+2) Predicciones de puntos de referencia (cache completo del dataset):
 ```bash
 python scripts/predict_landmarks_dataset.py \
   --input-dir data/dataset/COVID-19_Radiography_Dataset \
@@ -69,7 +69,7 @@ pip install gradio>=4.0.0
 python scripts/run_demo.py
 ```
 La interfaz se abrirá en `http://localhost:7860` con:
-- Visualización completa del pipeline (4 etapas)
+- Visualización completa del flujo de trabajo (4 etapas)
 - GradCAM para explicabilidad
 - Métricas validadas en pantalla
 - Exportación a PDF
@@ -79,10 +79,10 @@ Ver documentación completa: `src_v2/gui/README.md`
 ## Documentos clave
 - **GUI de demostración**: `src_v2/gui/README.md` (nuevo)
 - Flujo completo (detalle): `docs/REPRO_FULL_PIPELINE.md`
-- Landmarks ensemble 3.61: `docs/REPRO_ENSEMBLE_3_71.md`
+- Ensemble de puntos de referencia 3.61: `docs/REPRO_ENSEMBLE_3_71.md`
 - Warping quickstart: `docs/QUICKSTART_WARPING.md`
 - Clasificador warped: `docs/REPRO_CLASSIFIER_RESNET18.md`
 
 ## Nota sobre artefactos
 `data/`, `checkpoints/` y `outputs/` son locales y no se versionan. Los datos y
-checkpoints necesarios para reproducir el pipeline son provistos por el autor.
+checkpoints necesarios para reproducir el flujo de trabajo son provistos por el autor.
