@@ -19,6 +19,14 @@ data/dataset/
 outputs/
 results/
 
+# EXCEPCIONES: Archivos necesarios para la GUI (NO ignorar estos)
+!outputs/shape_analysis/
+!outputs/shape_analysis/*.json
+!outputs/classifier_warped_lung_best/
+!outputs/classifier_warped_lung_best/sweeps_2026-01-12/
+!outputs/classifier_warped_lung_best/sweeps_2026-01-12/lr2e-4_seed321_on/
+!outputs/classifier_warped_lung_best/sweeps_2026-01-12/lr2e-4_seed321_on/best_classifier.pt
+
 # IDE
 .idea/
 .vscode/
